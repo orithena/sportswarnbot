@@ -27,8 +27,9 @@ Dependencies
 Install
 -------
 
-  $ git clone https://github.com/orithena/sportswarnbot.git
-
+```bash
+$ git clone https://github.com/orithena/sportswarnbot.git
+```
 
 
 Configure/Develop
@@ -65,14 +66,17 @@ which gives you almost jQuery-like powers when it comes to selecting elements fr
 HTML DOM.
 
 As soon as your bot has got some followers, you may want to comment out the 
-  client.update_status(...)
+```python
+client.update_status(...)
+```
 line (l.40) in twitbotlib.py when you're testing around with the bot. No need to spam
-all your followers with your botched attempts to get it right :)
+all your followers with your botched attempts to get it right ;-)
 
 When you're done, put the program into your crontab:
-
-  $ crontab -e
-  55 * * * * /path/to/sportswarnbot/myhsvwarnbot.py | logger -t hsvwarnbot
+```bash
+$ crontab -e
+55 * * * * /path/to/sportswarnbot/myhsvwarnbot.py | logger -t hsvwarnbot
+```
   
 This will call the bot every hour at xx:55 and log all output into /var/log/syslog.
 The way it's set up currently, it would try to tweet the configured owner if there 
@@ -80,7 +84,7 @@ is an error. If that fails, there's always the output in the syslog.
 
 If you re-publish the bot to github, MAKE SURE YOU NEVER PUBLISH THE TWITTER API KEY DATA!
 This line of bash may help:
-
-  cat myhsvwarnbot.py | sed 's/^\([a-zA-Z_]\+="\).*"/\1"/' > hsvwarnbot.py
-
+```bash
+cat myhsvwarnbot.py | sed 's/^\([a-zA-Z_]\+="\).*"/\1"/' > hsvwarnbot.py
+```
 Then simply do not execute "git add myhsvwarnbot.py".

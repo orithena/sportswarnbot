@@ -37,7 +37,7 @@ def tweet(msg, mention_all_followers=False):
             if mention_all_followers:
                 for follower in client.get_followers_list()["users"]:
                     s = u"@%s %s" % (follower["screen_name"], msg)
-                    #client.update_status(status = s[:138])
+                    client.update_status(status = s[:138])
                     if _PRINT: print("Status updated: %s" % s)
                     time.sleep(1)
             else:

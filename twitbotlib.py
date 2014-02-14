@@ -24,7 +24,7 @@ def setup(app_key, app_secret, oauth_token, oauth_token_secret, owner, print_mes
     _PRINT = print_messages
     _ERRTWEET = tweet_errors_to_owner
 
-def tweet(msg, mention_all_followers=False):
+def tweet(msg, mention_all_followers=False, owner_mention=True):
     client = None
     try:
         client = twython.Twython(
@@ -41,7 +41,7 @@ def tweet(msg, mention_all_followers=False):
                     if _PRINT: print("Status updated: %s" % s)
                     time.sleep(1)
             else:
-                s = u"@%s %s" % (_OWNER, msg)
+                s = u"@%s %s" % (_OWNER, msg) if owner_mention else u"%s" % msg
                 client.update_status(status = s[:138])
                 if _PRINT: print("Status updated: %s" % s)
         except Exception as e:
@@ -52,18 +52,12 @@ def tweet(msg, mention_all_followers=False):
         if _PRINT: print(u"Exception while tweeting: %s" % e)
         print(traceback.format_exc())
 
-def tweet_owner(msg):
-    tweet(msg, mention_all_followers=False)
-
-def tweet_followers(msg):
-    tweet(msg, mention_all_followers=True)
-
-def tweet_followers_once(tweettext, next_event_datetime, statefilename="bvbwarnbot.state", hours_before=26):
+def once(tweettext, next_event_datetime, statefilename="warnbot.state", hours_before=26, all_followers=False):
     statefile.set(statefilename)
     if not statefile.has(tweettext):
         if datetime.datetime.now() + datetime.timedelta(hours=hours_before) > next_event_datetime:
             statefile.save(tweettext)
-            tweet_followers(tweettext)
+            tweet(tweettext, mention_all_followers=all_followers, owner_mention=False)
         else:
             if _PRINT: print(
                 "Not tweeted. %s -- Next Match: %s" % ( 
@@ -76,3 +70,16 @@ def tweet_followers_once(tweettext, next_event_datetime, statefilename="bvbwarnb
                 "Already in statefile",
                 next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")
             ))
+
+def tweet_once(tweettext, next_event_datetime, statefilename="warnbot.state", hours_before=(26, 4)):
+    for hb in hours_before:
+        once("%dh-%s" % (hb-1, tweettext), next_event_datetime, statefilename=statefilename, hours_before=hb, all_followers=False)
+
+def tweet_owner(msg):
+    tweet(msg, mention_all_followers=False)
+
+def tweet_followers(msg):
+    tweet(msg, mention_all_followers=True)
+
+def tweet_followers_once(tweettext, next_event_datetime, statefilename="warnbot.state", hours_before=26):
+    once(tweettext, next_event_datetime, statefilename=statefilename, hours_before=hours_before, all_followers=True)

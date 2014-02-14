@@ -31,12 +31,15 @@ Install
 $ git clone https://github.com/orithena/sportswarnbot.git
 ```
 
+Configure
+---------
 
-Configure/Develop
------------------
+```bash
+$ cp config_clean.py config.py
+$ $EDITOR config.py
+```
 
-Copy bvbwarner.py to another file, maybe myhsvwarnbot.py, then edit it according to 
-your needs. The main point is the Twitter API key and OAuth secret -- here's 
+The main point is the Twitter API key and OAuth secret -- here's 
 how to obtain one:
 
   * Create a new account on Twitter, maybe "hsvwarnbot".
@@ -60,10 +63,15 @@ how to obtain one:
   * Re-check the key's access level below the token secret.
   * If it's not at least "Read and Write", you confused the order of the steps above.
 
-Apart from that, you need to rewrite the data fetching function fetch_bvb() to match
-the website of the sports club in your vicinity. Luckily, there's soupselect included
-which gives you almost jQuery-like powers when it comes to selecting elements from a
-HTML DOM.
+
+Develop
+-------
+
+Copy bvb.py to another file, maybe hsv.py, then edit it according to your
+needs. You need to rewrite the data fetching function fetch_data() to match
+the website of the sports club in your vicinity. Luckily, there's
+soupselect included which gives you almost jQuery-like powers when it comes
+to selecting elements from a HTML DOM.
 
 As soon as your bot has got some followers, you may want to comment out the 
 ```python
@@ -75,7 +83,7 @@ all your followers with your botched attempts to get it right ;-)
 When you're done, put the program into your crontab:
 ```bash
 $ crontab -e
-55 * * * * /path/to/sportswarnbot/myhsvwarnbot.py | logger -t hsvwarnbot
+55 * * * * /path/to/sportswarnbot/warnbot.py | logger -t hsvwarnbot
 ```
   
 This will call the bot every hour at xx:55 and log all output into /var/log/syslog.
@@ -83,8 +91,4 @@ The way it's set up currently, it would try to tweet the configured owner if the
 is an error. If that fails, there's always the output in the syslog.
 
 If you re-publish the bot to github, MAKE SURE YOU NEVER PUBLISH THE TWITTER API KEY DATA!
-This line of bash may help:
-```bash
-cat myhsvwarnbot.py | sed 's/^\([a-zA-Z_]\+="\).*"/\1"/' > hsvwarnbot.py
-```
-Then simply do not execute "git add myhsvwarnbot.py".
+Simply never execute "git add config_clean.py".

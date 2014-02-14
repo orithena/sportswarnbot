@@ -8,6 +8,8 @@ Currently, it only supports upcoming matches of Borussia Dortmund by scraping bv
 It is planned to use openligadb.de as a data source to make it easier to fork your
 own bot.
 
+  * Für BVB-Warnungen folge @bvbwarnbot: https://twitter.com/bvbwarnbot
+
 
 
 Dependencies

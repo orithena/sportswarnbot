@@ -6,7 +6,7 @@ from tidylib import tidy_document
 from soupselect import select
 import urllib2, datetime, time, locale
 
-tidyoptions = { "output-xhtml": 1, "tidy-mark": 0, "force-output": 1, }
+tidyoptions = { "output-xhtml": 1, "tidy-mark": 0, "force-output": 1, "char-encoding": "utf8", }
 
 def fetch_data():
     def bvbreplace(s):

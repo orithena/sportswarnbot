@@ -5,6 +5,7 @@ import twitbotlib
 import config
 import importlib
 import locale
+from datetime import datetime
 fetch_module = importlib.import_module(config.data_fetcher)
 
 
@@ -17,3 +18,6 @@ try:
 except Exception as e:
     twitbotlib.tweet_owner(e)
     print(e)
+    with open("/tmp/sportswarnbot.log", "a") as log:
+        log.write("="*10 + datetime.isoformat(datetime.now()))
+        traceback.print_exc(file=log)

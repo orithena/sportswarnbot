@@ -47,7 +47,9 @@ def tweet(msg, mention_all_followers=False, owner_mention=True):
         except Exception as e:
             s = u"@%s %s" % (_OWNER, e)
             if _ERRTWEET: client.update_status(status = s[:138])
-            if _PRINT: print(u"Exception status: %s" % s)
+            if _PRINT: 
+                print(u"Exception status: %s" % s)
+                print(traceback.format_exc())
     except Exception as e:
         if _PRINT: print(u"Exception while tweeting: %s" % e)
         print(traceback.format_exc())
@@ -60,13 +62,15 @@ def once(tweettext, next_event_datetime, statefilename="warnbot.state", hours_be
             tweet(tweettext, mention_all_followers=all_followers, owner_mention=False)
         else:
             if _PRINT: print(
-                u"Not tweeted. %s -- Next Match: %s" % ( 
+                u"%dh warning not tweeted. %s -- Next Match: %s" % ( 
+                    hours_before,
                     u"Not due yet", 
                     next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")
                 ))
     else:
         if _PRINT: print(
-            u"Not tweeted. %s -- Next Match: %s" % ( 
+            u"%dh warning not tweeted. %s -- Next Match: %s" % ( 
+                hours_before,
                 u"Already in statefile",
                 next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")
             ))

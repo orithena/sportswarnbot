@@ -20,7 +20,7 @@ try:
     toottext, nextmatchtime = fetch_module.fetch_data()
     with open(config.log_file, "a") as log:
         log.write("Got parsed data at " + datetime.isoformat(datetime.now())+ "\n")
-    tootbotlib.toot_once(toottext, nextmatchtime, hours_before=(27,5), statefilename=config.state_file)
+    tootbotlib.toot_once(toottext, nextmatchtime, statefilename=config.state_file, hours_before=config.hours_before)
     with open(config.log_file, "a") as log:
         log.write("Done at " + datetime.isoformat(datetime.now())+ "\n")
 except Exception as e:

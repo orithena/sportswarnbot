@@ -41,17 +41,18 @@ def toot(msg, owner_mention=True):
         if _PRINT: print("Exception while tooting: %s" % e)
         print(traceback.format_exc())
 
-def once(toottext, next_event_datetime, statefilename="warnbot.state", hours_before=26, all_followers=False):
+def once(toottext, next_event_datetime, statefilename="warnbot.state", hours_before=26):
     statefile.set(statefilename)
+    event_delta = (datetime.datetime.now() + datetime.timedelta(hours=hours_before)) - next_event_datetime
     if not statefile.has(toottext):
-        if datetime.datetime.now() + datetime.timedelta(hours=hours_before) > next_event_datetime:
+        if event_delta > datetime.timedelta(0):
             statefile.save(toottext)
-            toot(toottext, mention_all_followers=all_followers, owner_mention=False)
+            toot(toottext, owner_mention=False)
         else:
             if _PRINT: print(
                 "%dh warning not tooted. %s -- Next Match: %s" % ( 
                     hours_before,
-                    "Not due yet", 
+                    "Due in %d hour(s)" % (1-int(event_delta.total_seconds() / (60*60))), 
                     next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")
                 ))
     else:
@@ -64,10 +65,7 @@ def once(toottext, next_event_datetime, statefilename="warnbot.state", hours_bef
 
 def toot_once(toottext, next_event_datetime, statefilename="warnbot.state", hours_before=(26, 4)):
     for hb in hours_before:
-        once("%dh-%s" % (hb-1, toottext), next_event_datetime, statefilename=statefilename, hours_before=hb, all_followers=False)
+        once("%dh-%s" % (hb-1, toottext), next_event_datetime, statefilename=statefilename, hours_before=hb)
 
 def toot_owner(msg):
-    toot(msg, mention_all_followers=False)
-
-def toot_followers_once(toottext, next_event_datetime, statefilename="warnbot.state", hours_before=26):
-    once(toottext, next_event_datetime, statefilename=statefilename, hours_before=hours_before, all_followers=True)
+    toot(msg)

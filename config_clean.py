@@ -5,6 +5,9 @@ owner=""
 # the module containing the fetch_data() function
 data_fetcher='bvb'
 
+# toot how many hours before the event? (tuple of integers)
+hours_before=(27,5)
+
 # app_name of the bot (shows up in your authorized applications)
 app_name="bvbwarnbot"
 

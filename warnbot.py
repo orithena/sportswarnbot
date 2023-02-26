@@ -18,7 +18,11 @@ with open("/tmp/sportswarnbot.log", "a") as log:
 
 try:
     tweettext, nextmatchtime = fetch_module.fetch_data()
+    with open("/tmp/sportswarnbot.log", "a") as log:
+        log.write("Got parsed data at " + datetime.isoformat(datetime.now())+ "\n")
     twitbotlib.tweet_once(tweettext, nextmatchtime, hours_before=(27,5))
+    with open("/tmp/sportswarnbot.log", "a") as log:
+        log.write("Done at " + datetime.isoformat(datetime.now())+ "\n")
 except Exception as e:
     twitbotlib.tweet_owner(e)
     print(e)

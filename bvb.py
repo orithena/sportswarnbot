@@ -36,9 +36,10 @@ def fetch_data():
             sys.exit(1)
         matchtime = datetime.datetime.strptime(select(soup, "div.next-match p")[1].contents[-1].strip(), u"%d.%m.%Y %H:%M")
         timestr = matchtime.strftime(u"%a, %d.%m.%Y %H:%M")
-        dontgo = u"U42/U46/Kreuzviertel/Borsigplatz/Uni-Parkplatz" if u"BVB" == home else u"Kneipen mit TV in Dortmund"
+        dontgo = u"Meide U42/U46/Kreuzviertel/Borsigplatz/Uni-Parkplatz" if u"BVB" == home else u"Meide Kneipen mit TV in Dortmund"
+        #dontgo = u"Hat jemand die Fans seit Start der Bundesliga beobachtet und kann Hinweise zu deren tatsächlichem Verhalten geben?"
         location = u"Heim" if u"BVB" == home else u"Auswaerts"
-        out = u"WARNUNG! %s: %s vs %s (%s/%s). Meide %s." % (timestr, home, guest, location, league, dontgo)
+        out = u"WARNUNG! %s: %s vs %s (%s/%s). %s." % (timestr, home, guest, location, league, dontgo)
     except IndexError:
         # This means: No next game on the webpage.
         sys.exit(1)

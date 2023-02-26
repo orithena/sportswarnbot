@@ -14,7 +14,7 @@ _OWNER = ''
 _PRINT = True
 _ERRTWEET = True
 
-def setup(app_key, app_secret, oauth_token, oauth_token_secret, owner, print_messages=True, tweet_errors_to_owner=True):
+def setup(app_key, app_secret, oauth_token, oauth_token_secret, owner, print_messages=True, tweet_errors_to_owner=False):
     global _APP_KEY, _APP_SECRET, _OAUTH_TOKEN, _OAUTH_TOKEN_SECRET, _OWNER, _PRINT, _ERRTWEET
     _APP_KEY = app_key
     _APP_SECRET = app_secret
@@ -40,13 +40,15 @@ def tweet(msg, mention_all_followers=False, owner_mention=True):
                     client.update_status(status = s[:138])
                     if _PRINT: print(u"Status updated: %s" % s)
                     time.sleep(1)
-            else:
+            elif not owner_mention:
+                # mentioning owner with errors is disabled with this if
                 s = u"@%s %s" % (_OWNER, msg) if owner_mention else u"%s" % msg
-                client.update_status(status = s[:138])
+                client.update_status(status = s[:278])
                 if _PRINT: print(u"Status updated: %s" % s)
         except Exception as e:
             s = u"@%s %s" % (_OWNER, e)
-            if _ERRTWEET: client.update_status(status = s[:138])
+            if _ERRTWEET:
+                client.update_status(status = s[:138])
             if _PRINT: 
                 print(u"Exception status: %s" % s)
                 print(traceback.format_exc())

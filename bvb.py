@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # - coding: utf-8 -
 
-from BeautifulSoup import BeautifulSoup as Soup
+from bs4 import BeautifulSoup as Soup
 from tidylib import tidy_document
 from soupselect import select
 import traceback
@@ -16,7 +16,7 @@ def fetch_data():
     doc = None
     try:
         doc, errs = tidy_document(urllib.request.urlopen('http://www.bvb.de/').read(), tidyoptions)
-        soup = Soup(doc)
+        soup = Soup(doc, "lxml")
     except Exception as e:
         print((traceback.format_exc()))
         raise Exception("Error fetching/parsing website: %s" % e.message)

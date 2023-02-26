@@ -8,7 +8,7 @@ _statefile = '/tmp/allemeineentchen.state'
 
 def set(statefile, statefiledir='/tmp'):
     global _statefile
-    _statefile = statefiledir + os.path.sep + statefile
+    _statefile = ((statefiledir + os.path.sep) if not os.path.sep in statefile else "") + statefile
     try:
         with codecs.open(_statefile, "a", "utf-8") as f:
             pass

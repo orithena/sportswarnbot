@@ -34,7 +34,7 @@ def toot(msg, owner_mention=True):
             s = "@%s %s" % (_OWNER, e)
             if _ERRTWEET:
                 client.toot(status = s[:300])
-            if _PRINT: 
+            if _PRINT:
                 print("Exception status: %s" % s)
                 print(traceback.format_exc())
     except Exception as e:
@@ -43,21 +43,21 @@ def toot(msg, owner_mention=True):
 
 def once(toottext, next_event_datetime, statefilename="warnbot.state", hours_before=26):
     statefile.set(statefilename)
-    event_delta = (datetime.datetime.now() + datetime.timedelta(hours=hours_before)) - next_event_datetime
+    event_delta = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=hours_before)) - next_event_datetime
     if not statefile.has(toottext):
         if event_delta > datetime.timedelta(0):
             statefile.save(toottext)
             toot(toottext, owner_mention=False)
         else:
             if _PRINT: print(
-                "%dh warning not tooted. %s -- Next Match: %s" % ( 
+                "%dh warning not tooted. %s -- Next Match: %s" % (
                     hours_before,
-                    "Due in %d hour(s)" % (1-int(event_delta.total_seconds() / (60*60))), 
+                    "Due in %d hour(s)" % (1-int(event_delta.total_seconds() / (60*60))),
                     next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")
                 ))
     else:
         if _PRINT: print(
-            "%dh warning not tooted. %s -- Next Match: %s" % ( 
+            "%dh warning not tooted. %s -- Next Match: %s" % (
                 hours_before,
                 "Already in statefile",
                 next_event_datetime.strftime("%a, %d.%m.%Y %H:%M")

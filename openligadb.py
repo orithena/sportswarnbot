@@ -47,7 +47,7 @@ def fetch_data(
             if team_name == home
             else f"Meide Kneipen mit TV in {team_city}"
         )
-        location = "Heim" if team_name == home else "Auswaerts"
+        location = "Heim" if team_name == home else "Auswärts"
         out = (
             f"WARNUNG! {timestr}: {home} vs {guest} ({league} — {location}). {dontgo}."
         )

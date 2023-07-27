@@ -15,7 +15,8 @@ own bot.
 Dependencies
 ------------
 
-  * Python 3.5 or higher
+  * Python 3.8 or higher (3.5 works too, but urllib seems to be a tad
+    unreliable there)
   * Python modules:
     * BeautifulSoup4
     * tidylib
@@ -60,12 +61,9 @@ the website of the sports club in your vicinity. Luckily, there's
 soupselect included which gives you almost jQuery-like powers when it comes
 to selecting elements from a HTML DOM.
 
-As soon as your bot has got some followers, you may want to comment out the 
-```python
-client.toot(...)
-```
-line (l.40) in tootbotlib.py when you're testing around with the bot. No need to spam
-all your followers with your botched attempts to get it right ;-)
+To test the output of your new fetch_data() function, just run your new
+python script. It should output the correct data, unless you removed its
+main function.
 
 When you're done, put the program into your crontab:
 ```bash
@@ -74,9 +72,7 @@ $ crontab -e
 ```
   
 This will call the bot every hour at xx:55 and log all output into /var/log/syslog.
-The way it's set up currently, it would try to tweet the configured owner if there 
-is an error. If that fails, there's always the output in the syslog.
 
 If you re-publish the bot to github, 
 MAKE SURE YOU NEVER PUBLISH THE MASTODON API KEY DATA!
-Simply never execute "git add config.py".
+Simply never add any of the secrets files to git..
